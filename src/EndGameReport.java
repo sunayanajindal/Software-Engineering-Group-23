@@ -39,46 +39,18 @@ public class EndGameReport implements ActionListener, ListSelectionListener {
 		colPanel.setLayout(new GridLayout( 1, 2 ));
 
 		// Member Panel
-		JPanel partyPanel = new JPanel();
-		partyPanel.setLayout(new FlowLayout());
-		partyPanel.setBorder(new TitledBorder("Party Members"));
-		
-		Vector myVector = new Vector();
-		Iterator iter = (party.getMembers()).iterator();
-		while (iter.hasNext()){
-			myVector.add( ((Bowler)iter.next()).getNick() );
-		}	
-		memberList = new JList(myVector);
-		memberList.setFixedCellWidth(120);
-		memberList.setVisibleRowCount(5);
+		EndGameReportMemberPanel MemberPanel = new EndGameReportMemberPanel(party);
+		JPanel partyPanel = MemberPanel.getPartyPanel();
+		memberList = MemberPanel.getMemberList();
 		memberList.addListSelectionListener(this);
-		JScrollPane partyPane = new JScrollPane(memberList);
-		//        partyPane.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_ALWAYS);
-		partyPanel.add(partyPane);
-
-		partyPanel.add( memberList );
 
 		// Button Panel
-		// Button Panel
-		JPanel buttonPanel = new JPanel();
-		buttonPanel.setLayout(new GridLayout(2, 1));
-
-		Insets buttonMargin = new Insets(4, 4, 4, 4);
-
-		printButton = new JButton("Print Report");
-		JPanel printButtonPanel = new JPanel();
-		printButtonPanel.setLayout(new FlowLayout());
+		EndGameReportButtonPanel ButtonsPanel = new EndGameReportButtonPanel();
+		printButton = ButtonsPanel.addButton("Print Report");
 		printButton.addActionListener(this);
-		printButtonPanel.add(printButton);
-
-		finished = new JButton("Finished");
-		JPanel finishedPanel = new JPanel();
-		finishedPanel.setLayout(new FlowLayout());
+		finished = ButtonsPanel.addButton("Finished");
 		finished.addActionListener(this);
-		finishedPanel.add(finished);
-
-		buttonPanel.add(printButton);
-		buttonPanel.add(finished);
+		JPanel buttonPanel = ButtonsPanel.getButtonPanel();
 
 		// Clean up main panel
 		colPanel.add(partyPanel);
