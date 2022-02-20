@@ -39,31 +39,4 @@ public class AddPartyElements {
                 ((screenSize.height) / 2) - ((win.getSize().height) / 2));
         win.show();
     }
-
-//    public JPanel getPartyPanel(){
-//        partyPanel = new JPanel();
-//        partyPanel.setLayout(new FlowLayout());
-//        partyPanel.setBorder(new TitledBorder("Your Party"));
-//
-//        party = new Vector();
-//        Vector empty = new Vector();
-//        empty.add("(Empty)");
-//
-//        partyList = new JList(empty);
-//        partyList.setFixedCellWidth(120);
-//        partyList.setVisibleRowCount(5);
-//        //partyList.addListSelectionListener(this);
-//        JScrollPane partyPane = new JScrollPane(partyList);
-//        //        partyPane.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_ALWAYS);
-//        partyPanel.add(partyPane);
-//        return partyPanel;
-//    }
-//
-//    public JList getPartyList() {
-//        return partyList;
-//    }
-//
-//    public Vector getParty() {
-//        return party;
-//    }
 }

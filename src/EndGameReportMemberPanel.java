@@ -22,7 +22,7 @@ public class EndGameReportMemberPanel {
         memberList.setVisibleRowCount(5);
         //memberList.addListSelectionListener(this);
         JScrollPane partyPane = new JScrollPane(memberList);
-        //        partyPane.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_ALWAYS);
+        //partyPane.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_ALWAYS);
         partyPanel.add(partyPane);
 
         partyPanel.add( memberList );

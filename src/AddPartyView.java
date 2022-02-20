@@ -60,13 +60,9 @@ public class AddPartyView implements ActionListener, ListSelectionListener {
 		AddPartyElements Elements = new AddPartyElements();
 
 		win = Elements.getWin();
-//		win = new JFrame("Add Party");
-//		win.getContentPane().setLayout(new BorderLayout());
-//		((JPanel) win.getContentPane()).setOpaque(false);
 
 		JPanel colPanel = new JPanel();
 		colPanel.setLayout(new GridLayout(1, 3));
-
 
 		AddPartyListView PartyListElements = new AddPartyListView();
 		// Party Panel
@@ -75,13 +71,11 @@ public class AddPartyView implements ActionListener, ListSelectionListener {
 		partyList.addListSelectionListener(this);
 		party = PartyListElements.getParty();
 
-
 		// Bowler Database
 		AddPartyBowlerView BowlerView = new AddPartyBowlerView();
 		bowlerPanel = BowlerView.getBowlerPanel();
 		allBowlers = BowlerView.getAllBowlers();
 		allBowlers.addListSelectionListener(this);
-
 
 		// Button Panel
 		JPanel buttonPanel = Elements.getButtonPanel();

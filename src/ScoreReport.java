@@ -1,10 +1,3 @@
-/**
- * 
- * SMTP implementation based on code by Réal Gagnon mailto:real@rgagnon.com
- * 
- */
-
-
 import java.io.*;
 import java.util.Vector;
 import java.util.Iterator;

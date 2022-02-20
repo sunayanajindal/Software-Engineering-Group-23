@@ -1,18 +1,3 @@
-/*
- * PinSetterView/.java
- *
- * Version:
- *   $Id$
- *
- * Revision:
- *   $Log$
- */
-
-/**
- *  constructs a prototype PinSetter GUI
- *
- */
-
 import java.awt.*;
 import java.awt.event.*;
 import javax.swing.*;
