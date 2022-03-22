@@ -24,7 +24,8 @@ public class PinSetterView implements PinsetterObserver {
 
     private Vector pinVect = new Vector ( );
     private JPanel firstRoll;
-    private JPanel secondRoll;
+    private JPanel secondRoll, emoticonLaBel;
+	private JLabel emoticon;
 
     /**
      * Constructs a Pin Setter GUI displaying which roll it is with
@@ -44,6 +45,9 @@ public class PinSetterView implements PinsetterObserver {
     public PinSetterView ( int laneNum ) {
 	
 	frame = new JFrame ( "Lane " + laneNum + ":" );
+	emoticon = new JLabel("Let's Play!!!");
+	emoticon.setBackground(Color.green);
+	emoticon.setOpaque(true);
 	
 	Container cpanel = frame.getContentPane ( );
 	
@@ -64,6 +68,8 @@ public class PinSetterView implements PinsetterObserver {
 	top.add ( firstRoll, BorderLayout.WEST );
 	
 	top.add ( secondRoll, BorderLayout.EAST );
+
+	top.add(emoticon);
 	
 	//******************************************************************
 	
@@ -204,7 +210,31 @@ public class PinSetterView implements PinsetterObserver {
 		}
 		secondRoll.setBackground( Color.black);
 	}
-    }
+	System.out.println("pinsDownOnThisThrow : " + pe.pinsDownOnThisThrow());
+    //System.out.print("pinsDownOnThisThrow : " + pe.pinsDownOnThisThrow());
+	int pinsDown = pe.pinsDownOnThisThrow();
+	if (pinsDown == 10) {
+		System.out.println("Wow... Perfect throw" + pe.pinsDownOnThisThrow());
+		emoticon.setText("Wow... Perfect throw");
+	}
+	else if (pinsDown >=7) {
+		System.out.println("Nice try" + pe.pinsDownOnThisThrow());
+		emoticon.setText("Nice try");
+	}
+	else if (pinsDown >=4) {
+		System.out.println("Need more practice" + pe.pinsDownOnThisThrow());
+		emoticon.setText("Need more practice");
+	}
+	else if (pinsDown >=1) {
+		System.out.println("Very poor" + pe.pinsDownOnThisThrow());
+		emoticon.setText("Very poor");
+	}
+	else if (pinsDown == 0) {
+		System.out.println("BETA... TUMSE NA HO PAEGA..." + pe.pinsDownOnThisThrow());
+		emoticon.setText("BETA... TUMSE NA HO PAEGA...");
+	}
+
+	}
     
     public void show() {
     	frame.show();

@@ -128,21 +128,56 @@ public class Pinsetter {
 	 * @pre none
 	 * @post pins may have been knocked down and the thrownumber has been incremented
 	 */
-	public void ballThrown() {	// simulated event of ball hits sensor
+//	public void ballThrown() {	// simulated event of ball hits sensor
+//		int count = 0;
+//		foul = false;
+//		double skill = rnd.nextDouble();
+//		for (int i=0; i <= 9; i++) {
+//			if (pins[i]) {
+//				double pinluck = rnd.nextDouble();
+//				if (pinluck <= .04){
+//					foul = true;
+//				}
+//				if ( ((skill + pinluck)/2.0 * 1.2) > .5 ){
+//					pins[i] = false;
+//				}
+//				if (!pins[i]) {		// this pin just knocked down
+//					count++;
+//				}
+//			}
+//		}
+//
+//		try {
+//			Thread.sleep(500);				// pinsetter is where delay will be in a real game
+//		} catch (Exception e) {}
+//
+//		sendEvent(count);
+//
+//		throwNumber++;
+//	}
+
+	public void ballThrown(int angle, int velocity) {	// simulated event of ball hits sensor
+		System.out.println("angle : " + angle + "  velocity : " + velocity);
 		int count = 0;
 		foul = false;
 		double skill = rnd.nextDouble();
-		for (int i=0; i <= 9; i++) {
-			if (pins[i]) {
-				double pinluck = rnd.nextDouble();
-				if (pinluck <= .04){ 
-					foul = true;
-				}
-				if ( ((skill + pinluck)/2.0 * 1.2) > .5 ){
-					pins[i] = false;
-				} 
-				if (!pins[i]) {		// this pin just knocked down
-					count++;
+
+		if(angle <-75 || angle > 75){
+			count = 0;
+		}
+		else  {
+			for (int i = 0; i <= 9; i++) {
+				if (pins[i]) {
+					double pinluck = rnd.nextDouble() * velocity/50;
+					if (pinluck <= .04) {
+						foul = true;
+					}
+					if (((skill + pinluck + velocity/50) / 2.0 * 1.2) > .5) {
+						pins[i] = false;
+					}
+					if (!pins[i]) {        // this pin just knocked down
+						count++;
+					}
 				}
 			}
 		}

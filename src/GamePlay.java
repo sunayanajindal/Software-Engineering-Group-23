@@ -16,11 +16,13 @@ public class GamePlay {
     public Iterator bowlerIterator;
     private int[][] finalScores;
     public int gameNumber;
+    public boolean canThrow;
 
     public GamePlay(){
         gameIsHalted = false;
         partyAssigned = false;
         gameFinished = false;
+        canThrow = true;
         scores = new HashMap();
         gameNumber = 0;
     }
@@ -137,6 +139,8 @@ public class GamePlay {
     }
 
     public int gameFinished(){
+        TieBreakerView tbv;
+
         EndGamePrompt egp = new EndGamePrompt( ((Bowler) party.getMembers().get(0)).getNickName() + "'s Party" );
         int result = egp.getResult();
         egp.distroy();
@@ -180,6 +184,10 @@ public class GamePlay {
         cumulScores[bowlIndex] = new CalculateScore(curScore,index).getCumulScores();
 
         //publish( lanePublish() );
+    }
+
+    public void extra_throw_to_runner_up(){
+
     }
 
 }

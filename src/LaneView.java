@@ -6,9 +6,11 @@
 import java.awt.*;
 import java.awt.event.*;
 import javax.swing.*;
+import javax.swing.event.ChangeEvent;
+import javax.swing.event.ChangeListener;
 import java.util.*;
 
-public class LaneView implements LaneObserver, ActionListener {
+public class LaneView implements LaneObserver, ActionListener, ChangeListener {
 
 	private int roll;
 	private boolean initDone = true;
@@ -28,6 +30,11 @@ public class LaneView implements LaneObserver, ActionListener {
 
 	JButton maintenance;
 	Lane lane;
+	JSlider angle;
+	JSlider velocity;
+
+	JLabel angleLabel, velocityLabel, angleValue, velocityValue;
+	JPanel anglePanel, velocityPanel;
 
 	public LaneView(Lane lane, int laneNum) {
 
@@ -118,13 +125,68 @@ public class LaneView implements LaneObserver, ActionListener {
 			panel.add(pins[i]);
 		}
 
+		anglePanel = new JPanel();
+		angleLabel = new JLabel("Angle");
+		angleValue = new JLabel();
+		// create a slider
+		angle = new JSlider(-90, 90, 0);
+
+		// paint the ticks and tracks
+		angle.setPaintTrack(true);
+		angle.setPaintTicks(true);
+		angle.setPaintLabels(true);
+
+		// set spacing
+		angle.setMajorTickSpacing(30);
+		angle.setMinorTickSpacing(5);
+
+		angle.addChangeListener(this);
+
+		anglePanel.add(angleLabel);
+		anglePanel.add(angle);
+		anglePanel.add(angleValue);
+		panel.add(anglePanel);
+		angleValue.setText("Value =" + angle.getValue());
+
+
+		velocityPanel = new JPanel();
+		velocityLabel = new JLabel("Velocity");
+		velocityValue = new JLabel();
+		// create a slider
+		velocity = new JSlider(0, 50, 0);
+
+		// paint the ticks and tracks
+		velocity.setPaintTrack(true);
+		velocity.setPaintTicks(true);
+		velocity.setPaintLabels(true);
+
+		// set spacing
+		velocity.setMajorTickSpacing(10);
+		velocity.setMinorTickSpacing(5);
+
+		velocity.addChangeListener(this);
+
+		velocityPanel.add(velocityLabel);
+		velocityPanel.add(velocity);
+		velocityPanel.add(velocityValue);
+		panel.add(velocityPanel);
+		velocityValue.setText("Value =" + velocity.getValue());
+
+
 		initDone = true;
 		return panel;
 	}
 
+	public void stateChanged(ChangeEvent e)
+	{
+		angleValue.setText("value of Slider is =" + angle.getValue());
+		velocityValue.setText("value of Slider is =" + velocity.getValue());
+	}
+
 	public void receiveLaneEvent(LaneEvent le) {
 		if (lane.isPartyAssigned()) {
-			int numBowlers = le.getParty().getMembers().size();
+			//int numBowlers = le.getParty().getMembers().size();
+			int numBowlers = le.getLaneEventBall().getParty().getMembers().size();
 			while (!initDone) {
 				//System.out.println("chillin' here.");
 				try {
@@ -138,7 +200,7 @@ public class LaneView implements LaneObserver, ActionListener {
 				&& le.getIndex() == 0) {
 				System.out.println("Making the frame.");
 				cpanel.removeAll();
-				cpanel.add(makeFrame(le.getParty()), "Center");
+				cpanel.add(makeFrame(le.getLaneEventBall().getParty()), "Center");
 
 				// Button Panel
 				JPanel buttonPanel = new JPanel();
@@ -152,6 +214,9 @@ public class LaneView implements LaneObserver, ActionListener {
 				maintenance.addActionListener(this);
 				maintenancePanel.add(maintenance);
 
+				JPanel throwBallPanel = new AddNewButton<LaneView>(this,"Throw Ball").returnButton();
+
+				buttonPanel.add(throwBallPanel);
 				buttonPanel.add(maintenancePanel);
 
 				cpanel.add(buttonPanel, "South");
@@ -160,7 +225,7 @@ public class LaneView implements LaneObserver, ActionListener {
 
 			}
 
-			int[][] lescores = le.getCumulScore();
+			int[][] lescores = le.getLaneEventBall().getCumulScore();
 			for (int k = 0; k < numBowlers; k++) {
 				for (int i = 0; i <= le.getFrameNum() - 1; i++) {
 					if (lescores[k][i] != 0)
@@ -168,30 +233,30 @@ public class LaneView implements LaneObserver, ActionListener {
 							(new Integer(lescores[k][i])).toString());
 				}
 				for (int i = 0; i < 21; i++) {
-					if (((int[]) ((HashMap) le.getScore())
+					if (((int[]) ((HashMap) le.getLaneEventBall().getScore())
 						.get(bowlers.get(k)))[i]
 						!= -1)
-						if (((int[]) ((HashMap) le.getScore())
+						if (((int[]) ((HashMap) le.getLaneEventBall().getScore())
 							.get(bowlers.get(k)))[i]
 							== 10
 							&& (i % 2 == 0 || i == 19))
 							ballLabel[k][i].setText("X");
 						else if (
 							i > 0
-								&& ((int[]) ((HashMap) le.getScore())
+								&& ((int[]) ((HashMap) le.getLaneEventBall().getScore())
 									.get(bowlers.get(k)))[i]
-									+ ((int[]) ((HashMap) le.getScore())
+									+ ((int[]) ((HashMap) le.getLaneEventBall().getScore())
 										.get(bowlers.get(k)))[i
 									- 1]
 									== 10
 								&& i % 2 == 1)
 							ballLabel[k][i].setText("/");
-						else if ( ((int[])((HashMap) le.getScore()).get(bowlers.get(k)))[i] == -2 ){
+						else if ( ((int[])((HashMap) le.getLaneEventBall().getScore()).get(bowlers.get(k)))[i] == -2 ){
 							
 							ballLabel[k][i].setText("F");
 						} else
 							ballLabel[k][i].setText(
-								(new Integer(((int[]) ((HashMap) le.getScore())
+								(new Integer(((int[]) ((HashMap) le.getLaneEventBall().getScore())
 									.get(bowlers.get(k)))[i]))
 									.toString());
 				}
@@ -203,6 +268,12 @@ public class LaneView implements LaneObserver, ActionListener {
 	public void actionPerformed(ActionEvent e) {
 		if (e.getSource().equals(maintenance)) {
 			lane.pauseGame();
+		}
+		if (e.getActionCommand().equals("Throw Ball")) {
+			System.out.println("action took - throw ball");
+			//lane.canThrow = true;
+			System.out.println("LANEVIEW  ::  angle : " + angle.getValue() + "  velocity : " + velocity.getValue());
+			lane.setCanThrow(angle.getValue(), velocity.getValue());
 		}
 	}
 

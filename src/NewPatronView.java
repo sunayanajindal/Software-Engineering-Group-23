@@ -130,8 +130,22 @@ public class NewPatronView implements ActionListener {
 			nick = nickField.getText();
 			full = fullField.getText();
 			email = emailField.getText();
-			done = true;
-			addParty.updateNewPatron( this );
+			if (BowlerFile.getNick_names().contains(nick.toUpperCase())){
+				JOptionPane.showMessageDialog(win, "Nick name already exists. Try something different!!!",
+						"WARNING", JOptionPane.WARNING_MESSAGE);
+			}
+			else if (BowlerFile.getEmails().contains(email.toUpperCase())){
+				JOptionPane.showMessageDialog(win, "Email name already exists. Try  different email!!!",
+						"WARNING", JOptionPane.WARNING_MESSAGE);
+			}
+			else{
+				done = true;
+				addParty.updateNewPatron( this );
+			}
+//			done = true;
+//			addParty.updateNewPatron( this );
+
+
 			win.hide();
 		}
 
